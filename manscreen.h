@@ -2,6 +2,7 @@
 #define MANSCREEN_H
 
 #include <QWidget>
+#include "dancingman.h"
 
 class ManScreen : public QWidget
 {
@@ -17,7 +18,8 @@ public slots:
 
 protected:
    void paintEvent(QPaintEvent *) override;
-
+private:
+    DancingMan man;
 };
 
 #endif // MANSCREEN_H
