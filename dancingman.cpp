@@ -10,8 +10,8 @@ const double DancingMan::legLength = 1.6180339887498948482;
 DancingMan::DancingMan():
     headAngle(0.0),
     bodyAngle(0.0),
-    leftHandAngle(1.0),
-    rightHandAngle(1.0),
+    leftHandAngle(0.0),
+    rightHandAngle(0.0),
     leftLegTangent(0.5),
     rightLegTangent(0.5)
 {

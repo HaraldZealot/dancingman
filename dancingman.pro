@@ -17,9 +17,13 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     centralwidget.cpp \
     manscreen.cpp \
-    dancingman.cpp
+    dancingman.cpp \
+    abstractformula.cpp \
+    sinusoida.cpp
 
 HEADERS  += mainwindow.h \
     centralwidget.h \
     manscreen.h \
-    dancingman.h
+    dancingman.h \
+    abstractformula.h \
+    sinusoida.h

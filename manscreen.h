@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "dancingman.h"
+#include "abstractformula.h"
 
 class ManScreen : public QWidget
 {
@@ -18,8 +19,10 @@ public slots:
 
 protected:
    void paintEvent(QPaintEvent *) override;
+   void timerEvent(QTimerEvent *) override;
 private:
     DancingMan man;
+    AbstractFormula *headFormula, *bodyFormula;
 };
 
 #endif // MANSCREEN_H
