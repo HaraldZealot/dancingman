@@ -54,14 +54,14 @@ void DancingMan::drawSelf(QPainter &painter) noexcept
     painter.drawLine(neck, neck + head);
 
     // left hand
-    QPointF leftFinger(scale * handLength * sin(M_PI * handAngleOrigin / 180.0), -scale * handLength * cos(M_PI * handAngleOrigin / 180.0));
+    QPointF leftFinger(scale *handLength * sin(M_PI *handAngleOrigin / 180.0), -scale *handLength * cos(M_PI *handAngleOrigin / 180.0));
     QTransform leftHandRotation;
     leftHandRotation.rotate(-handAngleLimit * leftHandAngle);
     leftFinger = (leftHandRotation * bodyRotattion).map(leftFinger);
     painter.drawLine(neck, neck + leftFinger);
 
     // right hand
-    QPointF rightFinger(-scale * handLength * sin(M_PI * handAngleOrigin / 180.0), -scale * handLength * cos(M_PI * handAngleOrigin / 180.0));
+    QPointF rightFinger(-scale *handLength * sin(M_PI *handAngleOrigin / 180.0), -scale *handLength * cos(M_PI *handAngleOrigin / 180.0));
     QTransform rightHandRotation;
     rightHandRotation.rotate(handAngleLimit * rightHandAngle);
     rightFinger = (rightHandRotation * bodyRotattion).map(rightFinger);

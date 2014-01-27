@@ -1,12 +1,20 @@
 #ifndef ABSTRACTFORMULA_H
 #define ABSTRACTFORMULA_H
 
+/// hierarchy-item type of class
 class AbstractFormula
 {
-public:
-    AbstractFormula();
-    virtual ~AbstractFormula();
-    virtual double operator()(double t)const=0;
+    public:
+        virtual ~AbstractFormula(){}
+
+        virtual double map(double t)const = 0;
+
+    protected:
+        AbstractFormula(){}
+
+    private:
+        AbstractFormula(const AbstractFormula &);
+        AbstractFormula &operator=(const AbstractFormula &);
 };
 
 #endif // ABSTRACTFORMULA_H

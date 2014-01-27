@@ -6,12 +6,12 @@
 
 class Sinusoida : public AbstractFormula
 {
-public:
-    Sinusoida(double omega);
-    virtual ~Sinusoida();
-    virtual double operator ()(double t)const override{return std::sin(mOmega * t);}
-private:
-    double mOmega;
+    public:
+        Sinusoida(double omega);
+        virtual ~Sinusoida();
+        virtual double map(double t)const override {return std::sin(mOmega * t);}
+    private:
+        double mOmega;
 };
 
 #endif // SINUSOIDA_H

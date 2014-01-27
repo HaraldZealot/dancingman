@@ -7,5 +7,4 @@ Sinusoida::Sinusoida(double omega):
 
 Sinusoida::~Sinusoida()
 {
-
 }

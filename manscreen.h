@@ -7,22 +7,22 @@
 
 class ManScreen : public QWidget
 {
-    Q_OBJECT
-public:
-    explicit ManScreen(QWidget *parent = 0);
+        Q_OBJECT
+    public:
+        explicit ManScreen(QWidget *parent = 0);
 
-    QSize sizeHint() const override {return QSize(200,200);}
+        QSize sizeHint() const override {return QSize(200, 200);}
 
-signals:
+    signals:
 
-public slots:
+    public slots:
 
-protected:
-   void paintEvent(QPaintEvent *) override;
-   void timerEvent(QTimerEvent *) override;
-private:
-    DancingMan man;
-    AbstractFormula *headFormula, *bodyFormula;
+    protected:
+        void paintEvent(QPaintEvent *) override;
+        void timerEvent(QTimerEvent *) override;
+    private:
+        DancingMan man;
+        AbstractFormula *headFormula, *bodyFormula;
 };
 
 #endif // MANSCREEN_H

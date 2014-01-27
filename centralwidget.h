@@ -5,13 +5,13 @@
 
 class CentralWidget : public QWidget
 {
-    Q_OBJECT
-public:
-    explicit CentralWidget(QWidget *parent = 0);
+        Q_OBJECT
+    public:
+        explicit CentralWidget(QWidget *parent = 0);
 
-signals:
+    signals:
 
-public slots:
+    public slots:
 
 };
 
