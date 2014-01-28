@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     centralwidget.cpp \
     manscreen.cpp \
     dancingman.cpp \
-    sinusoida.cpp
+    sinusoida.cpp \
+    terms.cpp
 
 HEADERS  += mainwindow.h \
     centralwidget.h \
@@ -26,4 +27,5 @@ HEADERS  += mainwindow.h \
     dancingman.h \
     abstractformula.h \
     sinusoida.h \
-    abstractterm.h
+    abstractterm.h \
+    terms.h
