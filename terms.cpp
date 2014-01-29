@@ -6,7 +6,6 @@ using namespace std;
 
 Plus::Plus()
 {
-
 }
 
 double Plus::calc(const double *operands, int valency) const

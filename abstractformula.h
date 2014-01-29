@@ -7,7 +7,7 @@ class AbstractFormula
     public:
         virtual ~AbstractFormula(){}
 
-        virtual double map(double t)const = 0;
+        virtual double map(double t) = 0;
 
     protected:
         AbstractFormula(){}

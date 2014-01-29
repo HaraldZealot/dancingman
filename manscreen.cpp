@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QTime>
 #include "sinusoida.h"
+#include "formula.h"
 #include <QDebug>
 
 
@@ -9,7 +10,7 @@ ManScreen::ManScreen(QWidget *parent) :
     QWidget(parent),
     man(),
     headFormula(new Sinusoida(3.0)),
-    bodyFormula(new Sinusoida(2.0))
+    bodyFormula(new Formula("(2.348   + -3e-5)  /\n(exp  (2.0*sqrt\t(0.5*t-0.1))*tg(4*t))"))
 {
     startTimer(20);
 }
@@ -28,7 +29,7 @@ void ManScreen::timerEvent(QTimerEvent *)
 {
     QTime current = QTime::currentTime();
     double t = (current.minute() * 60000 + current.second() * 1000 + current.msec()) / 1000.0;
-    qDebug() << t;
+    //qDebug() << t;
     man.setHeadAngle(headFormula->map(t));
     man.setBodyAngle(bodyFormula->map(t));
     update();

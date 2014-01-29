@@ -12,6 +12,7 @@ class Variable: public AbstractTerm
 
         virtual int valency()const override {return mValency;}
         virtual double calc(const double *operands, int valency) const override {Q_UNUSED(operands); Q_UNUSED(valency); return mT;}
+
     private:
         Variable(const Variable &);
         Variable &operator=(const Variable &);
@@ -23,11 +24,13 @@ class Variable: public AbstractTerm
 class Literal: public AbstractTerm
 {
     public:
-        Literal(double &value): mValue(value) {}
+        Literal(double value): mValue(value) {}
         virtual ~Literal() {}
 
         virtual int valency()const override {return mValency;}
         virtual double calc(const double *operands, int valency) const override {Q_UNUSED(operands); Q_UNUSED(valency); return mValue;}
+        virtual bool isCompileTimeEvaluable()const override {return true;}
+
     private:
         Literal(const Literal &);
         Literal &operator=(const Literal &);
@@ -118,50 +121,50 @@ class Power: public AbstractTerm
 
 class Exp: public AbstractTerm
 {
-public:
-    Exp(): AbstractTerm() {}
-    virtual ~Exp() {}
+    public:
+        Exp(): AbstractTerm() {}
+        virtual ~Exp() {}
 
-    virtual int valency() const override {return mValency;}
-    virtual double calc(const double *operands, int valency) const override;
+        virtual int valency() const override {return mValency;}
+        virtual double calc(const double *operands, int valency) const override;
 
-private:
-    Exp(const Exp &);
-    Exp &operator=(const Exp &);
+    private:
+        Exp(const Exp &);
+        Exp &operator=(const Exp &);
 
-    static const int mValency = 1;
+        static const int mValency = 1;
 };
 
 class Log10: public AbstractTerm
 {
-public:
-    Log10(): AbstractTerm() {}
-    virtual ~Log10() {}
+    public:
+        Log10(): AbstractTerm() {}
+        virtual ~Log10() {}
 
-    virtual int valency() const override {return mValency;}
-    virtual double calc(const double *operands, int valency) const override;
+        virtual int valency() const override {return mValency;}
+        virtual double calc(const double *operands, int valency) const override;
 
-private:
-    Log10(const Log10 &);
-    Log10 &operator=(const Log10 &);
+    private:
+        Log10(const Log10 &);
+        Log10 &operator=(const Log10 &);
 
-    static const int mValency = 1;
+        static const int mValency = 1;
 };
 
 class Sin: public AbstractTerm
 {
-public:
-    Sin(): AbstractTerm() {}
-    virtual ~Sin() {}
+    public:
+        Sin(): AbstractTerm() {}
+        virtual ~Sin() {}
 
-    virtual int valency() const override {return mValency;}
-    virtual double calc(const double *operands, int valency) const override;
+        virtual int valency() const override {return mValency;}
+        virtual double calc(const double *operands, int valency) const override;
 
-private:
-    Sin(const Sin &);
-    Sin &operator=(const Sin &);
+    private:
+        Sin(const Sin &);
+        Sin &operator=(const Sin &);
 
-    static const int mValency = 1;
+        static const int mValency = 1;
 };
 
 #endif // TERMS_H
