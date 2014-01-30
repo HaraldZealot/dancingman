@@ -4,8 +4,10 @@
 
 using namespace std;
 
-Plus::Plus()
+double UnaryMinus::calc(const double *operands, int valency) const
 {
+    assert(valency == mValency);
+    return -operands[0];
 }
 
 double Plus::calc(const double *operands, int valency) const
@@ -38,6 +40,12 @@ double Power::calc(const double *operands, int valency) const
     return pow(operands[1], operands[0]);
 }
 
+double Sqrt::calc(const double *operands, int valency) const
+{
+    assert(valency == mValency);
+    return sqrt(operands[0]);
+}
+
 double Exp::calc(const double *operands, int valency) const
 {
     assert(valency == mValency);
@@ -54,4 +62,22 @@ double Sin::calc(const double *operands, int valency) const
 {
     assert(valency == mValency);
     return sin(operands[0]);
+}
+
+double Cos::calc(const double *operands, int valency) const
+{
+    assert(valency == mValency);
+    return cos(operands[0]);
+}
+
+double Tan::calc(const double *operands, int valency) const
+{
+    assert(valency == mValency);
+    return tan(operands[0]);
+}
+
+double Cotan::calc(const double *operands, int valency) const
+{
+    assert(valency == mValency);
+    return cos(operands[0]) / sin(operands[0]);
 }

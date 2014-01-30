@@ -5,12 +5,12 @@
 class AbstractFormula
 {
     public:
-        virtual ~AbstractFormula(){}
+        virtual ~AbstractFormula() {}
 
         virtual double map(double t) = 0;
 
     protected:
-        AbstractFormula(){}
+        AbstractFormula() {}
 
     private:
         AbstractFormula(const AbstractFormula &);

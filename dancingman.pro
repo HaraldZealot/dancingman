@@ -4,6 +4,7 @@
 #
 #-------------------------------------------------
 
+QMAKE_CXXFLAGS += -D_GLIBCXX_DEBUG
 CONFIG += c++11
 QT       += core gui
 

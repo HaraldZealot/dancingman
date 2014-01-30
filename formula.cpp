@@ -89,44 +89,79 @@ TransnotationAdapter makeCloseBracket()
     return TransnotationAdapter(shared_ptr<AbstractTerm>(), TransnotationAdapter::closer, 0, false);
 }
 
-TransnotationAdapter factory(const QString &token, double &t)
+TransnotationAdapter factory(const QString &token, double &t, bool &unaryMinusFlag)
 {
     if(QRegularExpression("^[0-9]+(\\.[0-9]+)?([eE][-+]?[0-9]+)?$").match(token).hasMatch())
     {
+        unaryMinusFlag = false;
         return makeValuelike(make_shared<Literal>(token.toDouble()));
     }
     else if(QRegularExpression("^t$").match(token).hasMatch())
     {
+        unaryMinusFlag = false;
         return makeValuelike(make_shared<Variable>(t));
     }
     else if(QRegularExpression("^\\($").match(token).hasMatch())
     {
+        unaryMinusFlag = true;
         return makeOpenBracket();
     }
     else if(QRegularExpression("^\\)$").match(token).hasMatch())
     {
+        unaryMinusFlag = false;
         return makeCloseBracket();
     }
-    else if(QRegularExpression("^[+-*/^]$").match(token).hasMatch())
+    else if(QRegularExpression("^[-+*/^]$").match(token).hasMatch())
     {
-        if(QRegularExpression("^\\+$").match(token).hasMatch())
-            return makeOperator(make_shared<Plus>(), 1);
-        else if(QRegularExpression("^\\-$").match(token).hasMatch())
-            return makeOperator(make_shared<Minus>(), 1);
-        else if(QRegularExpression("^\\*$").match(token).hasMatch())
-            return makeOperator(make_shared<Multiply>(), 2);
-        else if(QRegularExpression("^\\/$").match(token).hasMatch())
-            return makeOperator(make_shared<Devide>(), 2);
-        else if(QRegularExpression("^\\^$").match(token).hasMatch())
-            return makeOperator(make_shared<Power>(), 3);
+        if(QRegularExpression("^\\-$").match(token).hasMatch())
+        {
+            if(unaryMinusFlag)
+                return makeOperator(make_shared<UnaryMinus>(), 4);
+            else
+            {
+                unaryMinusFlag = true;
+                return makeOperator(make_shared<Minus>(), 1);
+            }
+        }
         else
-            assert(false);
+        {
+            unaryMinusFlag = true;
+
+            if(QRegularExpression("^\\+$").match(token).hasMatch())
+                return makeOperator(make_shared<Plus>(), 1);
+            else if(QRegularExpression("^\\*$").match(token).hasMatch())
+                return makeOperator(make_shared<Multiply>(), 2);
+            else if(QRegularExpression("^\\/$").match(token).hasMatch())
+                return makeOperator(make_shared<Devide>(), 2);
+            else if(QRegularExpression("^\\^$").match(token).hasMatch())
+                return makeOperator(make_shared<Power>(), 3);
+            else
+                assert(false);
+        }
     }
     else if(QRegularExpression("^((sqrt|sin|cos|tg|ctg|arcsin|arccos|arctg|arcctg|exp|lg|ln|lb)\\W*\\()$").match(token).hasMatch())
     {
-        if(QRegularExpression("^sin\\W*\\($").match(token).hasMatch())
+        unaryMinusFlag = true;
+
+        if(QRegularExpression("^sqrt\\W*\\($").match(token).hasMatch())
+        {
+            return makeFunction(make_shared<Sqrt>());
+        }
+        else if(QRegularExpression("^sin\\W*\\($").match(token).hasMatch())
         {
             return makeFunction(make_shared<Sin>());
+        }
+        else if(QRegularExpression("^cos\\W*\\($").match(token).hasMatch())
+        {
+            return makeFunction(make_shared<Cos>());
+        }
+        else if(QRegularExpression("^tg\\W*\\($").match(token).hasMatch())
+        {
+            return makeFunction(make_shared<Tan>());
+        }
+        else if(QRegularExpression("^ctg\\W*\\($").match(token).hasMatch())
+        {
+            return makeFunction(make_shared<Cotan>());
         }
         else if(QRegularExpression("^exp\\W*\\($").match(token).hasMatch())
         {
@@ -157,19 +192,70 @@ Formula::Formula():
 Formula::Formula(const QString &infixRecord):
     mT(0.0)
 {
-    QRegularExpression tokenPattern("([+-*/^]|((sqrt|sin|cos|tg|ctg|arcsin|arccos|arctg|arcctg|exp|lg|ln|lb)\\W*\\()|\\(|\\)|([0-9]+(\\.[0-9]+)?([eE][-+]?[0-9]+)?)|t)");
+    QRegularExpression tokenPattern("([-+*/^]|((sqrt|sin|cos|tg|ctg|arcsin|arccos|arctg|arcctg|exp|lg|ln|lb)\\W*\\()|\\(|\\)|([0-9]+(\\.[0-9]+)?([eE][-+]?[0-9]+)?)|t)");
     QRegularExpressionMatchIterator it = tokenPattern.globalMatch(infixRecord);
-    QStringList tokens;
+    vector<TransnotationAdapter> rawTerms;
+    bool unaryMinusFlag = true;
+    rawTerms.push_back(makeOpenBracket());
 
     while(it.hasNext())
     {
         QRegularExpressionMatch match = it.next();
         QString token = match.captured(1);
         qDebug() << token;
-        tokens << token;
+        cout << token.toUtf8().constData() << " ";
+        rawTerms.push_back(factory(token, mT, unaryMinusFlag));
     }
 
-    qDebug() << tokens;
+    cout << endl;
+    rawTerms.push_back(makeCloseBracket());
+    qDebug() << "rawTerms";
+    vector<shared_ptr<AbstractTerm> > beforeOptimisationRecord;
+    stack<TransnotationAdapter> operatorStack;
+
+    for(auto jt = rawTerms.begin(), end = rawTerms.end(); jt != end; ++jt)
+    {
+        switch(jt->role())
+        {
+            case TransnotationAdapter::operand:
+                jt->putToContainer(beforeOptimisationRecord);
+                break;
+
+            case TransnotationAdapter::operation:
+                while(operatorStack.top().priority() >= jt->priority())
+                {
+                    operatorStack.top().putToContainer(beforeOptimisationRecord);
+                    operatorStack.pop();
+                }
+
+                operatorStack.push(*jt);
+                break;
+
+            case TransnotationAdapter::opener:
+                operatorStack.push(*jt);
+                break;
+
+            case TransnotationAdapter::closer:
+                while(operatorStack.top().role() != TransnotationAdapter::opener)
+                {
+                    operatorStack.top().putToContainer(beforeOptimisationRecord);
+                    operatorStack.pop();
+                }
+
+                operatorStack.top().putToContainer(beforeOptimisationRecord);
+                operatorStack.pop();
+                break;
+        }
+    }
+
+    qDebug() << "before optimisation";
+
+    for(auto jt = beforeOptimisationRecord.begin(), end = beforeOptimisationRecord.end(); jt != end; ++jt)
+    {
+        cout << (*jt)->toString().toUtf8().constData() << " ";
+    }
+
+    cout << endl;
 }
 
 double Formula::map(double t)
