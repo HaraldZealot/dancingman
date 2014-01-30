@@ -256,12 +256,59 @@ Formula::Formula(const QString &infixRecord):
     }
 
     cout << endl;
+
+    for(auto jt = beforeOptimisationRecord.begin(), end = beforeOptimisationRecord.end(); jt != end; ++jt)
+    {
+        int valency = (*jt)->valency();
+        assert(postfixRecord.size() >= (unsigned int)valency);
+
+        if(valency)
+        {
+            bool compileTimeEvaluable = true;
+
+            for(auto k = 0; k < valency; ++k)
+            {
+                compileTimeEvaluable = compileTimeEvaluable && (*(postfixRecord.end() - 1 - k))->isCompileTimeEvaluable();
+            }
+
+            if(compileTimeEvaluable)
+            {
+                double argumentStack[2] = {0.0, 0.0};
+
+                for(auto k = 0; k < valency; ++k)
+                {
+                    if(postfixRecord.empty())
+                        throw AccesToEmptyException();
+
+                    argumentStack[k] = postfixRecord.back()->calc(argumentStack, postfixRecord.back()->valency());
+                    postfixRecord.pop_back();
+                }
+
+                postfixRecord.push_back(make_shared<Literal>((*jt)->calc(argumentStack, valency)));
+            }
+            else
+            {
+                postfixRecord.push_back(*jt);
+            }
+        }
+        else
+        {
+            postfixRecord.push_back(*jt);
+        }
+    }
+
+    for(auto jt = postfixRecord.begin(), end = postfixRecord.end(); jt != end; ++jt)
+    {
+        cout << (*jt)->toString().toUtf8().constData() << " ";
+    }
+
+    cout << endl;
 }
 
 double Formula::map(double t)
 {
     mT = t;
-    /*stack<double> calcStack;
+    stack<double> calcStack;
     double argumentStack[2] = {0.0, 0.0};
     double result = 0.0;
 
@@ -295,6 +342,5 @@ double Formula::map(double t)
         cerr << e.what();
     }
 
-    return result;*/
-    return 0.0;
+    return result;
 }

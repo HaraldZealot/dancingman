@@ -10,7 +10,7 @@ ManScreen::ManScreen(QWidget *parent) :
     QWidget(parent),
     man(),
     headFormula(new Sinusoida(3.0)),
-    bodyFormula(new Formula("(2.348   + -3e-5)  /\n(exp  (2.0*sqrt\t(0.5*t-0.1))*tg(4*t))"))
+    bodyFormula(new Formula("10^4*exp(-t/100)*cos(t)"))
 {
     startTimer(20);
 }
