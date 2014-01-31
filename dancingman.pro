@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     dancingman.cpp \
     sinusoida.cpp \
     terms.cpp \
-    formula.cpp
+    formula.cpp \
+    formulavalidator.cpp
 
 HEADERS  += mainwindow.h \
     centralwidget.h \
@@ -31,4 +32,5 @@ HEADERS  += mainwindow.h \
     sinusoida.h \
     abstractterm.h \
     terms.h \
-    formula.h
+    formula.h \
+    formulavalidator.h

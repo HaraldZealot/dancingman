@@ -1,18 +1,32 @@
 #include "manscreen.h"
 #include <QPainter>
-#include <QTime>
 #include "sinusoida.h"
 #include "formula.h"
 #include <QDebug>
+#include <utility>
 
 
 ManScreen::ManScreen(QWidget *parent) :
     QWidget(parent),
     man(),
     headFormula(new Sinusoida(3.0)),
-    bodyFormula(new Formula("10^4*exp(-t/100)*cos(t)"))
+    bodyFormula(new Formula("sin(4*t)"))
 {
+    originTime = QTime::currentTime();
     startTimer(20);
+}
+
+void ManScreen::setHeadFormula(const QString &formula)
+{
+    try
+    {
+        AbstractFormula *temp = new Formula(formula);
+        std::swap(headFormula, temp);
+        delete temp;
+    }
+    catch(...)
+    {
+    }
 }
 
 void ManScreen::paintEvent(QPaintEvent *)
@@ -27,8 +41,8 @@ void ManScreen::paintEvent(QPaintEvent *)
 
 void ManScreen::timerEvent(QTimerEvent *)
 {
-    QTime current = QTime::currentTime();
-    double t = (current.minute() * 60000 + current.second() * 1000 + current.msec()) / 1000.0;
+    double t = originTime.msecsTo(QTime::currentTime()) / 1000.0;
+    //double t = (current.minute() * 60000 + current.second() * 1000 + current.msec()) / 1000.0;
     //qDebug() << t;
     man.setHeadAngle(headFormula->map(t));
     man.setBodyAngle(bodyFormula->map(t));
