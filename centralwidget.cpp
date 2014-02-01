@@ -20,6 +20,18 @@ CentralWidget::CentralWidget(QWidget *parent) :
     headText->setPlaceholderText(tr("Enter formula..."));
     layout7->addWidget(headText);
     FormulaValidator *headValidator = new FormulaValidator();
+    //
+    QGroupBox *bodyBox = new QGroupBox(tr("body"));
+    layout6->addWidget(bodyBox);
+    QVBoxLayout *layout8 = new QVBoxLayout;
+    bodyBox->setLayout(layout8);
+    QLineEdit *bodyText = new QLineEdit();
+    bodyText->setPlaceholderText(tr("Enter formula..."));
+    layout8->addWidget(bodyText);
+    FormulaValidator *bodyValidator = new FormulaValidator();
+    //
     connect(headText, SIGNAL(textChanged(QString)), headValidator, SLOT(reciveText(QString)));
     connect(headValidator, SIGNAL(newValidFormula(QString)), screen, SLOT(setHeadFormula(QString)));
+    connect(bodyText, SIGNAL(textChanged(QString)), bodyValidator, SLOT(reciveText(QString)));
+    connect(bodyValidator, SIGNAL(newValidFormula(QString)), screen, SLOT(setBodyFormula(QString)));
 }

@@ -4,7 +4,7 @@
 
 const double DancingMan::headLength = 0.3819660112501051518;
 const double DancingMan::bodyLength = 1.0;
-const double DancingMan::handLength = 0.6180339887498948482;
+const double DancingMan::handLength = 1.0;//0.6180339887498948482;
 const double DancingMan::legLength = 1.6180339887498948482;
 
 DancingMan::DancingMan():
@@ -22,8 +22,8 @@ void DancingMan::drawSelf(QPainter &painter) noexcept
     double scale = 64.0; //pixel
     double headAngleLimit = 15.0; //degree
     double bodyAngleLimit = 30.0; //degree
-    double handAngleLimit = 80.0; //degree
-    double handAngleOrigin = 95.0; //degree from body
+    double handAngleLimit = 72.5; //degree
+    double handAngleOrigin = 82.5; //degree from body
 
     painter.save();
     painter.setPen(QPen(QBrush(Qt::green), 5.0));

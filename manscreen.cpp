@@ -9,8 +9,10 @@
 ManScreen::ManScreen(QWidget *parent) :
     QWidget(parent),
     man(),
-    headFormula(new Sinusoida(3.0)),
-    bodyFormula(new Formula("sin(4*t)"))
+    headFormula(new Sinusoida(1.5)),
+    bodyFormula(new Formula("sin(3*t)")),
+    leftHandFormula(new Formula("sin(3*t)")),
+    rightHandFormula(new Formula("sin(3*t)"))
 {
     originTime = QTime::currentTime();
     startTimer(20);
@@ -22,6 +24,19 @@ void ManScreen::setHeadFormula(const QString &formula)
     {
         AbstractFormula *temp = new Formula(formula);
         std::swap(headFormula, temp);
+        delete temp;
+    }
+    catch(...)
+    {
+    }
+}
+
+void ManScreen::setBodyFormula(const QString &formula)
+{
+    try
+    {
+        AbstractFormula *temp = new Formula(formula);
+        std::swap(bodyFormula, temp);
         delete temp;
     }
     catch(...)
@@ -46,5 +61,7 @@ void ManScreen::timerEvent(QTimerEvent *)
     //qDebug() << t;
     man.setHeadAngle(headFormula->map(t));
     man.setBodyAngle(bodyFormula->map(t));
+    man.setLeftHandAngle(leftHandFormula->map(t));
+    man.setRightHandAngle(rightHandFormula->map(t));
     update();
 }

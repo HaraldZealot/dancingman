@@ -12,20 +12,22 @@ class ManScreen : public QWidget
     public:
         explicit ManScreen(QWidget *parent = 0);
 
-        QSize sizeHint() const override {return QSize(200, 200);}
+        QSize sizeHint() const override {return QSize(300, 300);}
 
     signals:
 
     public slots:
         void setHeadFormula(const QString &formula);
+        void setBodyFormula(const QString &formula);
 
     protected:
         void paintEvent(QPaintEvent *) override;
         void timerEvent(QTimerEvent *) override;
+
     private:
         QTime originTime;
         DancingMan man;
-        AbstractFormula *headFormula, *bodyFormula;
+        AbstractFormula *headFormula, *bodyFormula, *leftHandFormula, *rightHandFormula;
 };
 
 #endif // MANSCREEN_H
