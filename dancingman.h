@@ -26,7 +26,7 @@ class DancingMan
         void setLeftLegTangent(double value) noexcept {leftLegTangent = value;}
 
         double getRightLegTangent() const;
-        void setRightLegTangent(double value) noexcept {leftLegTangent = value;}
+        void setRightLegTangent(double value) noexcept {rightLegTangent = value;}
 
     private:
         double headAngle;

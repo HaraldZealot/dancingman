@@ -9,10 +9,12 @@
 ManScreen::ManScreen(QWidget *parent) :
     QWidget(parent),
     man(),
-    headFormula(new Sinusoida(1.5)),
-    bodyFormula(new Formula("sin(3*t)")),
+    headFormula(new Formula("sin(3*t)")),
+    bodyFormula(new Formula("cos(3*t)")),
     leftHandFormula(new Formula("sin(3*t)")),
-    rightHandFormula(new Formula("sin(3*t)"))
+    rightHandFormula(new Formula("cos(3*t)")),
+    leftLegFormula(new Formula("sin(3*t)")),
+    rightLegFormula(new Formula("cos(3*t)"))
 {
     originTime = QTime::currentTime();
     startTimer(20);
@@ -44,6 +46,58 @@ void ManScreen::setBodyFormula(const QString &formula)
     }
 }
 
+void ManScreen::setLeftHandFormula(const QString &formula)
+{
+    try
+    {
+        AbstractFormula *temp = new Formula(formula);
+        std::swap(leftHandFormula, temp);
+        delete temp;
+    }
+    catch(...)
+    {
+    }
+}
+
+void ManScreen::setRightHandFormula(const QString &formula)
+{
+    try
+    {
+        AbstractFormula *temp = new Formula(formula);
+        std::swap(rightHandFormula, temp);
+        delete temp;
+    }
+    catch(...)
+    {
+    }
+}
+
+void ManScreen::setLeftLegFormula(const QString &formula)
+{
+    try
+    {
+        AbstractFormula *temp = new Formula(formula);
+        std::swap(leftLegFormula, temp);
+        delete temp;
+    }
+    catch(...)
+    {
+    }
+}
+
+void ManScreen::setRightLegFormula(const QString &formula)
+{
+    try
+    {
+        AbstractFormula *temp = new Formula(formula);
+        std::swap(rightLegFormula, temp);
+        delete temp;
+    }
+    catch(...)
+    {
+    }
+}
+
 void ManScreen::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
@@ -57,11 +111,11 @@ void ManScreen::paintEvent(QPaintEvent *)
 void ManScreen::timerEvent(QTimerEvent *)
 {
     double t = originTime.msecsTo(QTime::currentTime()) / 1000.0;
-    //double t = (current.minute() * 60000 + current.second() * 1000 + current.msec()) / 1000.0;
-    //qDebug() << t;
     man.setHeadAngle(headFormula->map(t));
     man.setBodyAngle(bodyFormula->map(t));
     man.setLeftHandAngle(leftHandFormula->map(t));
     man.setRightHandAngle(rightHandFormula->map(t));
+    man.setLeftLegTangent(leftLegFormula->map(t));
+    man.setRightLegTangent(rightLegFormula->map(t));
     update();
 }

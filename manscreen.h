@@ -19,6 +19,10 @@ class ManScreen : public QWidget
     public slots:
         void setHeadFormula(const QString &formula);
         void setBodyFormula(const QString &formula);
+        void setLeftHandFormula(const QString &formula);
+        void setRightHandFormula(const QString &formula);
+        void setLeftLegFormula(const QString &formula);
+        void setRightLegFormula(const QString &formula);
 
     protected:
         void paintEvent(QPaintEvent *) override;
@@ -27,7 +31,12 @@ class ManScreen : public QWidget
     private:
         QTime originTime;
         DancingMan man;
-        AbstractFormula *headFormula, *bodyFormula, *leftHandFormula, *rightHandFormula;
+        AbstractFormula *headFormula,
+                        *bodyFormula,
+                        *leftHandFormula,
+                        *rightHandFormula,
+                        *leftLegFormula,
+                        *rightLegFormula;
 };
 
 #endif // MANSCREEN_H
