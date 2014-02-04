@@ -81,3 +81,9 @@ double Cotan::calc(const double *operands, int valency) const
     assert(valency == mValency);
     return cos(operands[0]) / sin(operands[0]);
 }
+
+double Asin::calc(const double *operands, int valency) const
+{
+    assert(valency == mValency);
+    return asin(operands[0]);
+}

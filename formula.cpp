@@ -163,6 +163,10 @@ TransnotationAdapter factory(const QString &token, double &t, bool &unaryMinusFl
         {
             return makeFunction(make_shared<Cotan>());
         }
+        else if(QRegularExpression("^arcsin\\W*\\($").match(token).hasMatch())
+        {
+            return makeFunction(make_shared<Asin>());
+        }
         else if(QRegularExpression("^exp\\W*\\($").match(token).hasMatch())
         {
             return makeFunction(make_shared<Exp>());

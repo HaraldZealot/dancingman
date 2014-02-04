@@ -263,4 +263,22 @@ class Cotan: public AbstractTerm
         static const int mValency = 1;
 };
 
+class Asin: public AbstractTerm
+{
+    public:
+        Asin(): AbstractTerm() {}
+        virtual ~Asin() {}
+
+        virtual int valency() const override {return mValency;}
+        virtual double calc(const double *operands, int valency) const override;
+        virtual QString toString()const override {return QString("asin");}
+
+    private:
+        Asin(const Asin &);
+        Asin &operator=(const Asin &);
+
+        static const int mValency = 1;
+};
+
+
 #endif // TERMS_H
