@@ -167,6 +167,10 @@ TransnotationAdapter factory(const QString &token, double &t, bool &unaryMinusFl
         {
             return makeFunction(make_shared<Asin>());
         }
+        else if(QRegularExpression("^arccos\\W*\\($").match(token).hasMatch())
+        {
+            return makeFunction(make_shared<Acos>());
+        }
         else if(QRegularExpression("^exp\\W*\\($").match(token).hasMatch())
         {
             return makeFunction(make_shared<Exp>());

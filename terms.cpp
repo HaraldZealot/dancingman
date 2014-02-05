@@ -87,3 +87,9 @@ double Asin::calc(const double *operands, int valency) const
     assert(valency == mValency);
     return asin(operands[0]);
 }
+
+double Acos::calc(const double *operands, int valency) const
+{
+    assert(valency == mValency);
+    return acos(operands[0]);
+}

@@ -280,5 +280,22 @@ class Asin: public AbstractTerm
         static const int mValency = 1;
 };
 
+class Acos: public AbstractTerm
+{
+    public:
+        Acos(): AbstractTerm() {}
+        virtual ~Acos() {}
+
+        virtual int valency() const override {return mValency;}
+        virtual double calc(const double *operands, int valency) const override;
+        virtual QString toString()const override {return QString("acos");}
+
+    private:
+        Acos(const Acos &);
+        Acos &operator=(const Acos &);
+
+        static const int mValency = 1;
+};
+
 
 #endif // TERMS_H
