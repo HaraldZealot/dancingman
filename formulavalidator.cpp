@@ -11,6 +11,7 @@ FormulaValidator::FormulaValidator(QObject *parent) :
 }
 
 bool isBracketValid(const QString &text);
+bool hasNoEmptyBracket(const QString &text);
 bool isSequenceValid(const QString &text);
 
 void FormulaValidator::reciveText(const QString &text)
@@ -18,7 +19,7 @@ void FormulaValidator::reciveText(const QString &text)
     qDebug() << text;
 
     if(QRegularExpression("^(([-+*/^]|((sqrt|sin|cos|tg|ctg|arcsin|arccos|arctg|arcctg|exp|lg|ln|lb)\\W*\\()|\\(|\\)|([0-9]+(\\.[0-9]+)?([eE][-+]?[0-9]+)?)|t)\\W*)+$").match(text).hasMatch()
-            && isBracketValid(text) && isSequenceValid(text))
+            && isBracketValid(text) && hasNoEmptyBracket(text) && isSequenceValid(text))
     {
         emit newValidFormula(text);
     }
@@ -51,6 +52,11 @@ bool isBracketValid(const QString &text)
     }
 
     return stack.empty();
+}
+
+bool hasNoEmptyBracket(const QString &text)
+{
+    return !QRegularExpression("\\(\\W*\\)").match(text).hasMatch();
 }
 
 enum State {opener, operand, minus, operation, closer, stop};
